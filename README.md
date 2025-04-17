@@ -12,7 +12,8 @@ The application is built using a microservices architecture with the following s
 
    - Handles user authentication and profile management
    - Manages user preferences and settings
-   - REST API endpoints for user operations
+   - gRPC API for user operations
+   - Written in Go
 
 2. **Workout Service**
 
@@ -39,26 +40,38 @@ The application is built using a microservices architecture with the following s
 
 ### Technology Stack
 
-- **Backend**: Node.js with Express
-- **Database**: MongoDB (for each service)
-- **Message Broker**: RabbitMQ (for inter-service communication)
-- **API Gateway**: Express Gateway
-- **Frontend**: React with TypeScript
+- **Backend**:
+  - Go (for User Service)
+  - gRPC for inter-service communication
+- **Database**: PostgreSQL
+- **Message Broker**: RabbitMQ (for asynchronous communication between services)
+- **API Gateway**: Traefik (for routing and load balancing)
 - **Containerization**: Docker
 - **Orchestration**: Docker Compose (for development)
+- **Frontend**: To be implemented
 
 ## Project Structure
 
 ```
-microservices/
-├── user-service/
-├── workout-service/
-├── progress-service/
-├── dashboard-service/
-└── notification-service/
-
-interface/
-└── frontend/
+microservices_interface/                    # Root directory of the project
+├── README.md                              # Project documentation and setup instructions
+├── microservices/                         # Directory containing all microservices
+│   ├── user/                             # User management service
+│   │   ├── cmd/                          # Main application entry points
+│   │   ├── internal/                     # Internal package structure following clean architecture
+│   │   │   ├── config/                   # Configuration management
+│   │   │   ├── infrastructure/           # External interfaces (database, gRPC, etc.)
+│   │   │   ├── domain/                   # Business logic and entities
+│   │   │   └── application/              # Use cases and application services
+│   │   ├── proto/                        # gRPC service definitions and protobuf files
+│   │   ├── Dockerfile                    # Container configuration for the service
+│   │   ├── docker-compose.yml            # Service-specific Docker Compose configuration
+│   │   └── go.mod                        # Go module dependencies
+│   ├── workout/                          # Workout tracking and management service
+│   ├── progress/                         # Progress tracking and analytics service
+│   ├── notification/                     # Notification and messaging service
+│   └── dashboard/                        # Data aggregation and visualization service
+└── interface/                            # Frontend application (to be implemented)
 ```
 
 ## Getting Started
@@ -70,14 +83,16 @@ interface/
 
 ## Development
 
-Each microservice is independently deployable and maintainable. They communicate through REST APIs and message queues.
+Each microservice is independently deployable and maintainable. They communicate through gRPC.
 
 ## API Documentation
 
-API documentation for each service will be available at:
+API documentation for each service will be available through their respective gRPC definitions in the `proto` directory of each service.
 
-- User Service: `/api/users/docs`
-- Workout Service: `/api/workouts/docs`
-- Progress Service: `/api/progress/docs`
-- Dashboard Service: `/api/dashboard/docs`
-- Notification Service: `/api/notifications/docs`
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
